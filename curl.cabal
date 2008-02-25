@@ -16,7 +16,9 @@ license-file:       LICENSE
 author:             Sigbjorn Finne
 maintainer:         emertens@galois.com
 build-depends:      base
+build-type:         Configure
 cabal-version:      >= 1.2
+extra-source-files: configure, configure.ac, curl.buildinfo.in
 
 flag new-base
   Description: Build with new smaller base library
@@ -34,7 +36,7 @@ library
 
   Extra-libraries: curl
   Extensions:      CPP, ForeignFunctionInterface
-  Ghc-options:     -Wall -fvia-C -fffi -O2
+  Ghc-options:     -Wall -fvia-C -O2
 
   Build-Depends: base
   if flag(new-base)
