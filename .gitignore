@@ -1,0 +1,6 @@
+*~
+dist
+Curl/*_stub.*
+config.log
+config.status
+curl.buildinfo
