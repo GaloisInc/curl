@@ -4,12 +4,11 @@
 -- Copyright : (c) Galois Inc 2007-8
 -- License   : BSD3
 --
--- Author: Sigbjorn Finne, Iavor S. Diatchki, Eric Mertens
 -- Maintainer: emertens@galois.com
 -- Stability : provisional
 -- Portability: portable
 --
--- A Haskell binding the libcurl library (http:\/\/curl.haxx.se\/), a 
+-- A Haskell binding the libcurl library <http://curl.haxx.se/>, a
 -- proven and feature-rich library for interacting with HTTP(S)\/FTP
 -- servers.
 --
@@ -20,6 +19,7 @@
 -- chance your code will work against older installations of libcurl.
 --
 --------------------------------------------------------------------
+
 module Network.Curl
        ( module Network.Curl.Opts
        , module Network.Curl.Easy

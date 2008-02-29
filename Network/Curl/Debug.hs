@@ -4,7 +4,7 @@
 -- Copyright : (c) Galois, Inc. 2008
 -- License   : BSD3
 --
--- Maintainer: Don Stewart <dons@galois.com>
+-- Maintainer: emertens@galois.com
 -- Stability : provisional
 -- Portability:
 --

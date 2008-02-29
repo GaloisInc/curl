@@ -5,7 +5,6 @@
 -- Copyright : (c) Galois Inc 2007
 -- License   : BSD3
 --
--- Author: Sigbjorn Finne, Iavor S. Diatchki, Eric Mertens
 -- Maintainer: emertens@galois.com
 -- Stability : provisional
 -- Portability: portable

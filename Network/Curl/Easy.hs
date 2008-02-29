@@ -5,12 +5,11 @@
 -- Copyright : (c) Galois Inc 2007
 -- License   :
 --
--- Author: Sigbjorn Finne, Iavor S. Diatchki, Eric Mertens
 -- Maintainer: emertens@galois.com
 -- Stability : provisional
 -- Portability: portable
 --
--- Haskell binding to the libcurl (http:\/\/curl.haxx.se\/) \"easy\" API.
+-- Haskell binding to the libcurl <http://curl.haxx.se/> \"easy\" API.
 -- The \"easy\" API provides a higher-level, easy-to-get-started calling
 -- interface to the library's wide range of features for interacting
 -- with HTTP\/FTP\/etc servers.

@@ -2,9 +2,8 @@
 -- |
 -- Module    : Network.Curl.Opts
 -- Copyright : (c) Galois Inc 2007
--- License   :
+-- License   : BSD3
 --
--- Author: Sigjorn Finne, Iavor S. Diatchki
 -- Maintainer: emertens@galois.com
 -- Stability : provisional
 -- Portability: portable
