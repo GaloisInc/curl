@@ -39,6 +39,7 @@ module Network.Curl
        , curlGet             -- :: URLString -> [CurlOption] -> IO ()
        , curlGetString       -- :: URLString -> [CurlOption] -> IO (CurlCode, String)
        , curlGetResponse     -- :: URLString -> [CurlOption] -> IO CurlResponse
+       , perform_with_response -- :: Curl -> IO CurlResponse
 
           -- probing for gold..
        , curlHead            -- :: URLString
@@ -176,19 +177,38 @@ curlGetResponse url opts = do
   setopt  h (CurlWriteFunction (gatherOutput body_ref))
   setopt  h (CurlHeaderFunction (gatherOutput hdr_ref))
   mapM_ (setopt h) opts
-  rc       <- perform h
-  bss      <- readIORef body_ref
-  hss      <- readIORef hdr_ref
-  rspCode  <- getResponseCode h
-  let (st,hs) = parseStatusNHeaders (concRev [] hss)
-  return CurlResponse
-    { respCurlCode   = rc
-    , respStatus     = rspCode
-    , respStatusLine = st
-    , respHeaders    = hs
-    , respBody       = concRev [] bss
-    , respGetInfo    = getInfo h  -- note: we're holding onto the handle here..
-    }
+  -- note that users cannot over-write the body and header handler
+  -- which makes sense because otherwise we will return a bogus reposnse.
+  perform_with_response h
+
+-- | Perform the actions already specified on the handle.
+-- Collects useful information about the returned message.
+-- Note that this function sets the
+-- 'CurlWriteFunction' and 'CurlHeaderFunction' options.
+perform_with_response :: Curl -> IO CurlResponse
+perform_with_response h =
+  do body_ref <- newIORef []
+     hdr_ref <- newIORef []
+     setopt  h (CurlWriteFunction (gatherOutput body_ref))
+     setopt  h (CurlHeaderFunction (gatherOutput hdr_ref))
+     rc       <- perform h
+     bss      <- readIORef body_ref
+     hss      <- readIORef hdr_ref
+     rspCode  <- getResponseCode h
+     let (st,hs) = parseStatusNHeaders (concRev [] hss)
+     return CurlResponse
+       { respCurlCode   = rc
+       , respStatus     = rspCode
+       , respStatusLine = st
+       , respHeaders    = hs
+       , respBody       = concRev [] bss
+       -- note: we're holding onto the handle here..
+       -- note: with this interface this is not neccessary.
+       , respGetInfo    = getInfo h
+       }
+
+
+
 
 -- | Get the headers associated with a particular URL.
 -- Returns the status line and the key-value pairs for the headers.
