@@ -40,6 +40,7 @@ module Network.Curl
        , curlGetString       -- :: URLString -> [CurlOption] -> IO (CurlCode, String)
        , curlGetResponse     -- :: URLString -> [CurlOption] -> IO CurlResponse
        , perform_with_response -- :: Curl -> IO CurlResponse
+       , do_curl
 
           -- probing for gold..
        , curlHead            -- :: URLString
@@ -64,6 +65,7 @@ module Network.Curl
        , method_HEAD         -- :: [CurlOption]
        , method_POST         -- :: [CurlOption]
 
+       , parseStatusNHeaders, concRev
        ) where
 
 import Network.Curl.Opts
@@ -181,6 +183,8 @@ curlGetResponse url opts = do
   -- which makes sense because otherwise we will return a bogus reposnse.
   perform_with_response h
 
+
+
 -- | Perform the actions already specified on the handle.
 -- Collects useful information about the returned message.
 -- Note that this function sets the
@@ -189,6 +193,11 @@ perform_with_response :: Curl -> IO CurlResponse
 perform_with_response h =
   do body_ref <- newIORef []
      hdr_ref <- newIORef []
+
+     -- Insted of allocating a swparate handler for each
+     -- request we could just set this options one and forall
+     -- and just clear the IORefs.
+
      setopt  h (CurlWriteFunction (gatherOutput body_ref))
      setopt  h (CurlHeaderFunction (gatherOutput hdr_ref))
      rc       <- perform h
@@ -207,7 +216,15 @@ perform_with_response h =
        , respGetInfo    = getInfo h
        }
 
-
+-- | Performs a curl request using an exisitng curl handle.
+-- The provided URL will overwride any 'CurlURL' options that
+-- are provided in the list of options.  See also: 'perform_with_response'.
+do_curl :: Curl -> URLString -> [CurlOption] -> IO CurlResponse
+do_curl h url opts =
+  do setDefaultSSLOpts h url
+     setopts h opts
+     setopt h (CurlURL url)
+     perform_with_response h
 
 
 -- | Get the headers associated with a particular URL.
