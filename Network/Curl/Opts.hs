@@ -230,18 +230,18 @@ toSSHAuthMask (x:xs) =
 
 
 type WriteFunction
-  = Ptr CChar  -- ^ pointer to external buffer holding data
- -> CInt       -- ^ width (in bytes) of each item
- -> CInt       -- ^ number of items
- -> Ptr ()     -- ^ state argument (file pointer etc.)
- -> IO CInt    -- ^ number of bytes written.
+  = Ptr CChar  --  pointer to external buffer holding data
+ -> CInt       --  width (in bytes) of each item
+ -> CInt       --  number of items
+ -> Ptr ()     --  state argument (file pointer etc.)
+ -> IO CInt    --  number of bytes written.
 
 type ReadFunction
-  = Ptr CChar  -- ^ pointer to external buffer to fill in.
- -> CInt       -- ^ width (in bytes) of each item
- -> CInt       -- ^ number of items
- -> Ptr ()     -- ^ state argument (file pointer etc.)
- -> IO (Maybe CInt) -- ^ how many bytes was copied into buffer; Nothing => abort.
+  = Ptr CChar  --  pointer to external buffer to fill in.
+ -> CInt       --  width (in bytes) of each item
+ -> CInt       --  number of items
+ -> Ptr ()     --  state argument (file pointer etc.)
+ -> IO (Maybe CInt) --  how many bytes was copied into buffer; Nothing => abort.
  
 type ReadFunctionPrim
   = Ptr CChar
@@ -252,20 +252,20 @@ type ReadFunctionPrim
  
 
 type ProgressFunction
-  = Ptr ()  -- ^ state argument
- -> Double  -- ^ expected download totals
- -> Double  -- ^ download totals so far
- -> Double  -- ^ expected upload totals
- -> Double  -- ^ upload totals so far
- -> IO CInt -- ^ not sure; 0 is a good one.
+  = Ptr ()  --  state argument
+ -> Double  --  expected download totals
+ -> Double  --  download totals so far
+ -> Double  --  expected upload totals
+ -> Double  --  upload totals so far
+ -> IO CInt --  not sure; 0 is a good one.
 
 type DebugFunction
-  = Curl       -- ^ connection handle
- -> DebugInfo  -- ^ type of call
- -> Ptr CChar  -- ^ data buffer
- -> CInt       -- ^ length of buffer
- -> Ptr ()     -- ^ state argument
- -> IO ()      -- ^ always 0
+  = Curl       --  connection handle
+ -> DebugInfo  --  type of call
+ -> Ptr CChar  --  data buffer
+ -> CInt       --  length of buffer
+ -> Ptr ()     --  state argument
+ -> IO ()      --  always 0
 
 data DebugInfo
  = InfoText
@@ -278,19 +278,19 @@ data DebugInfo
    deriving ( Eq, Enum )
 
 type DebugFunctionPrim
-  = CurlH      -- ^ connection handle
- -> CInt       -- ^ type of call
- -> Ptr CChar  -- ^ data buffer
- -> CInt       -- ^ length of buffer
- -> Ptr ()     -- ^ state argument
- -> IO CInt    -- ^ always 0
+  = CurlH      --  connection handle
+ -> CInt       --  type of call
+ -> Ptr CChar  --  data buffer
+ -> CInt       --  length of buffer
+ -> Ptr ()     --  state argument
+ -> IO CInt    --  always 0
 
 
 
 type SSLCtxtFunction
-  = CurlH   -- ^ connection handle
- -> Ptr ()  -- ^ the SSL_CTX handle
- -> Ptr ()  -- ^ state argument
+  = CurlH   --  connection handle
+ -> Ptr ()  --  the SSL_CTX handle
+ -> Ptr ()  --  state argument
  -> IO CInt
 
 curl_readfunc_abort :: CInt
