@@ -168,25 +168,25 @@ foreign import ccall
   "curl_easy_reset" easy_reset :: CurlH -> IO ()
 
 foreign import ccall
-  "curl_easy_setopt" easy_setopt_long :: CurlH -> Int -> Long -> IO CInt
+  "curl_easy_setopt_long" easy_setopt_long :: CurlH -> Int -> Long -> IO CInt
 
 foreign import ccall
-  "curl_easy_setopt" easy_setopt_llong :: CurlH -> Int -> LLong -> IO CInt
+  "curl_easy_setopt_longlong" easy_setopt_llong :: CurlH -> Int -> LLong -> IO CInt
 
 foreign import ccall
-  "curl_easy_setopt" easy_setopt_string :: CurlH -> Int -> Ptr CChar -> IO CInt
+  "curl_easy_setopt_string" easy_setopt_string :: CurlH -> Int -> Ptr CChar -> IO CInt
 
 foreign import ccall
-  "curl_easy_setopt" easy_setopt_ptr :: CurlH -> Int -> Ptr a -> IO CInt
+  "curl_easy_setopt_ptr" easy_setopt_ptr :: CurlH -> Int -> Ptr a -> IO CInt
 
 foreign import ccall
-  "curl_easy_setopt" easy_setopt_fptr :: CurlH -> Int -> FunPtr a -> IO CInt
+  "curl_easy_setopt_ptr" easy_setopt_fptr :: CurlH -> Int -> FunPtr a -> IO CInt
 
 foreign import ccall
-  "curl_easy_setopt" easy_setopt_wfun :: CurlH -> Int -> FunPtr WriteFunction -> IO CInt
+  "curl_easy_setopt_ptr" easy_setopt_wfun :: CurlH -> Int -> FunPtr WriteFunction -> IO CInt
 
 foreign import ccall
-  "curl_easy_setopt" easy_setopt_rfun :: CurlH -> Int -> FunPtr ReadFunctionPrim -> IO CInt
+  "curl_easy_setopt_ptr" easy_setopt_rfun :: CurlH -> Int -> FunPtr ReadFunctionPrim -> IO CInt
 
 
 foreign import ccall "wrapper"

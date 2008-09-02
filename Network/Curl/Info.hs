@@ -132,7 +132,7 @@ getInfo h i = do
 getInfoStr :: Curl -> String -> Long -> IO InfoValue
 getInfoStr h loc tg =
      alloca $ \ ps -> do
-        rc <- curlPrim h $ \_ p -> easy_getinfo_str p (stringTag + tg) ps
+        rc <- curlPrim h $ \_ p -> easy_getinfo_str p tg ps
         case rc of
           0 -> do
              s <- peek ps
@@ -144,7 +144,7 @@ getInfoStr h loc tg =
 getInfoLong :: Curl -> String -> Long -> IO InfoValue
 getInfoLong h loc tg =
      alloca $ \ pl -> do
-        rc <- curlPrim h $ \_ p -> easy_getinfo_long p (longTag + tg) pl
+        rc <- curlPrim h $ \_ p -> easy_getinfo_long p tg pl
         case rc of
           0 -> do
              l <- peek pl
@@ -154,7 +154,7 @@ getInfoLong h loc tg =
 getInfoDouble :: Curl -> String -> Long -> IO InfoValue
 getInfoDouble h loc tg =
      alloca $ \ pd -> do
-        rc <- curlPrim h $ \_ p -> easy_getinfo_double p (doubleTag + tg) pd
+        rc <- curlPrim h $ \_ p -> easy_getinfo_double p tg pd
         case rc of
           0 -> do
              d <- peek pd
@@ -164,7 +164,7 @@ getInfoDouble h loc tg =
 getInfoSList :: Curl -> String -> Long -> IO InfoValue
 getInfoSList h loc tg =
      alloca $ \ ps -> do
-        rc <- curlPrim h $ \_ p -> easy_getinfo_slist p (slistTag + tg) ps
+        rc <- curlPrim h $ \_ p -> easy_getinfo_slist p tg ps
         case rc of
           0 -> do
              p <- peek ps
@@ -183,13 +183,13 @@ getInfoSList h loc tg =
 
 -- FFI decls
 foreign import ccall
-  "curl_easy_getinfo" easy_getinfo_long :: CurlH -> Long -> Ptr Long -> IO CInt
+  "curl_easy_getinfo_long" easy_getinfo_long :: CurlH -> Long -> Ptr Long -> IO CInt
 
 foreign import ccall
-  "curl_easy_getinfo" easy_getinfo_str  :: CurlH -> Long -> Ptr CString -> IO CInt
+  "curl_easy_getinfo_string" easy_getinfo_str  :: CurlH -> Long -> Ptr CString -> IO CInt
 
 foreign import ccall
-  "curl_easy_getinfo" easy_getinfo_double :: CurlH -> Long -> Ptr Double -> IO CInt
+  "curl_easy_getinfo_double" easy_getinfo_double :: CurlH -> Long -> Ptr Double -> IO CInt
 
 foreign import ccall
-  "curl_easy_getinfo" easy_getinfo_slist :: CurlH -> Long -> Ptr (Ptr (Ptr CChar)) -> IO CInt
+  "curl_easy_getinfo_slist" easy_getinfo_slist :: CurlH -> Long -> Ptr (Ptr (Ptr CChar)) -> IO CInt
