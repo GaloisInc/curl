@@ -1,4 +1,5 @@
-{-# OPTIONS -fffi -fvia-C -#include "curl/curl.h" #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# OPTIONS -fvia-C -#include "curl/curl.h" #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Info

@@ -165,24 +165,27 @@ data CurlOption
  | CurlHttpTransferDecoding Bool        -- ^ Disable transfer decoding; if disabled, curl will turn off chunking.
  | CurlHttpContentDecoding  Bool        -- ^ Disable content decoding, getting the raw bits.
 
+instance Show CurlOption where
+  show x = showCurlOption x
+
 data HttpVersion
  = HttpVersionNone
  | HttpVersion10
  | HttpVersion11
-   deriving ( Enum )
+   deriving ( Enum,Show )
 
 data TimeCond
  = TimeCondNone
  | TimeCondIfModSince
  | TimeCondIfUnmodSince
  | TimeCondLastMode
-   deriving ( Enum )
+   deriving ( Enum, Show )
  
 data NetRcOption
  = NetRcIgnored
  | NetRcOptional
  | NetRcRequired
-   deriving ( Enum )
+   deriving ( Enum, Show )
 
 data HttpAuth
  = HttpAuthNone
@@ -192,6 +195,7 @@ data HttpAuth
  | HttpAuthNTLM
  | HttpAuthAny
  | HttpAuthAnySafe
+   deriving ( Enum, Show )
 
 toHttpAuthMask :: [HttpAuth] -> Long
 toHttpAuthMask [] = 0
@@ -214,6 +218,7 @@ data SSHAuthType
  | SSHAuthPassword
  | SSHAuthHost
  | SSHAuthKeyboard
+   deriving ( Show )
 
 
 toSSHAuthMask :: [SSHAuthType] -> Long
@@ -511,3 +516,147 @@ u_enum um x b = u_long um x (fromIntegral $ fromEnum b)
 
 u_cptr :: Unmarshaller a -> Int -> Ptr CChar -> IO a
 u_cptr um x p = u_ptr um x (castPtr p)
+
+showCurlOption :: CurlOption -> String
+showCurlOption o = 
+  case o of
+    CurlFileObj p  -> "CurlFileObj " ++ show p
+    CurlURL u      -> "CurlURL " ++ show u
+    CurlPort p     -> "CurlPort " ++ show p
+    CurlProxy s    -> "CurlProxy " ++ show s
+    CurlUserPwd p  -> "CurlUserPwd " ++ show p
+    CurlProxyUserPwd p -> "CurlProxyUserPwd " ++ show p
+    CurlRange p -> "CurlRange " ++ show p
+    CurlInFile p -> "CurlInFile " ++ show p
+    CurlErrorBuffer p -> "CurlErrorBuffer " ++ show p
+    CurlWriteFunction{} -> "CurlWriteFunction <fun>"
+    CurlReadFunction{}  -> "CurlReadFunction <fun>"
+    CurlTimeout l       -> "CurlTimeout " ++ show l
+    CurlInFileSize l    -> "CurlInFileSize " ++ show l
+    CurlPostFields p    -> "CurlPostFields " ++ show p
+    CurlReferer p       -> "CurlReferer " ++ show p
+    CurlFtpPort p       -> "CurlFtpPort " ++ show p
+    CurlUserAgent p     -> "CurlUserAgent " ++ show p
+    CurlLowSpeed  p     -> "CurlLowSpeed " ++ show p
+    CurlLowSpeedTime p  -> "CurlLowSpeedTime " ++ show p
+    CurlResumeFrom p    -> "CurlResumeFrom " ++ show p
+    CurlCookie p        -> "CurlCookie " ++ show p
+    CurlHttpHeaders p   -> "CurlHttpHeaders " ++ show p
+    CurlHttpPost p      -> "CurlHttpPost " ++ show p
+    CurlSSLCert p       -> "CurlSSLCert " ++ show p
+    CurlSSLPassword p   -> "CurlSSLPassword " ++ show p
+    CurlSSLKeyPassword p -> "CurlSSLKeyPassword " ++ show p
+    CurlCRLF p -> "CurlCRLF " ++ show p
+    CurlQuote p -> "CurlQuote " ++ show p
+    CurlWriteHeader p -> "CurlWriteHeader " ++ show p
+    CurlCookieFile p -> "CurlCookieFile " ++ show p
+    CurlSSLVersion p -> "CurlSSLVersion " ++ show p
+    CurlTimeCondition p -> "CurlTimeCondition " ++ show p
+    CurlTimeValue p -> "CurlTimeValue " ++ show p
+    CurlCustomRequest p -> "CurlCustomRequest " ++ show p
+    CurlPostQuote p -> "CurlPostQuote " ++ show p
+    CurlWriteInfo p -> "CurlWriteInfo " ++ show p
+    CurlVerbose p -> "CurlVerbose " ++ show p
+    CurlHeader p -> "CurlHeader " ++ show p
+    CurlNoProgress p -> "CurlNoProgress " ++ show p
+    CurlNoBody p -> "CurlNoBody " ++ show p
+    CurlFailOnError p -> "CurlFailOnError " ++ show p
+    CurlUpload p -> "CurlUpload " ++ show p
+    CurlPost p -> "CurlPost " ++ show p
+    CurlFtpListOnly p -> "CurlFtpListOnly " ++ show p
+    CurlFtpAppend p -> "CurlFtpAppend " ++ show p
+    CurlUseNetRc p -> "CurlUseNetRc " ++ show p
+    CurlFollowLocation p -> "CurlFollowLocation " ++ show p
+    CurlTransferTextASCII p -> "CurlTransferTextASCII " ++ show p
+    CurlPut p -> "CurlPut " ++ show p
+    CurlProgressFunction{} -> "CurlProgressFunction <fun>"
+    CurlProgressData p -> "CurlProgressData " ++ show p
+    CurlAutoReferer p -> "CurlAutoReferer " ++ show p
+    CurlProxyPort p -> "CurlProxyPort " ++ show p
+    CurlPostFieldSize p -> "CurlPostFieldSize " ++ show p
+    CurlHttpProxyTunnel p -> "CurlHttpProxyTunnel " ++ show p
+    CurlInterface p -> "CurlInterface " ++ show p
+    CurlKrb4Level p -> "CurlKrb4Level " ++ show p
+    CurlSSLVerifyPeer p -> "CurlSSLVerifyPeer " ++ show p
+    CurlCAInfo p -> "CurlCAInfo " ++ show p
+    CurlMaxRedirs p -> "CurlMaxRedirs " ++ show p
+    CurlFiletime p -> "CurlFiletime " ++ show p
+    CurlTelnetOptions p -> "CurlTelnetOptions " ++ show p
+    CurlMaxConnects p -> "CurlMaxConnects " ++ show p
+    CurlClosePolicy p -> "CurlClosePolicy " ++ show p
+    CurlFreshConnect p -> "CurlFreshConnect " ++ show p
+    CurlForbidReuse p -> "CurlForbidReuse " ++ show p
+    CurlRandomFile p -> "CurlRandomFile " ++ show p
+    CurlEgdSocket p -> "CurlEgdSocket " ++ show p
+    CurlConnectTimeout p -> "CurlConnectTimeout " ++ show p
+    CurlHeaderFunction{} -> "CurlHeaderFunction <fun>"
+    CurlHttpGet p -> "CurlHttpGet " ++ show p
+    CurlSSLVerifyHost p -> "CurlSSLVerifyHost " ++ show p
+    CurlCookieJar p -> "CurlCookieJar " ++ show p
+    CurlSSLCipherList p -> "CurlSSLCipherList " ++ show p
+    CurlHttpVersion p -> "CurlHttpVersion " ++ show p
+    CurlFtpUseEPSV p -> "CurlFtpUseEPSV " ++ show p
+    CurlSSLCertType p -> "CurlSSLCertType " ++ show p
+    CurlSSLKey p -> "CurlSSLKey " ++ show p
+    CurlSSLKeyType p -> "CurlSSLKeyType " ++ show p
+    CurlSSLEngine p -> "CurlSSLEngine " ++ show p
+    CurlSSLEngineDefault-> "CurlSSLEngineDefault"
+    CurlDNSUseGlobalCache p -> "CurlDNSUseGlobalCache " ++ show p
+    CurlDNSCacheTimeout p -> "CurlDNSCacheTimeout " ++ show p
+    CurlPreQuote p -> "CurlPreQuote " ++ show p
+    CurlDebugFunction{} -> "CurlDebugFunction <fun>"
+    CurlDebugData p -> "CurlDebugData " ++ show p
+    CurlCookieSession p -> "CurlCookieSession " ++ show p
+    CurlCAPath p -> "CurlCAPath " ++ show p
+    CurlBufferSize p -> "CurlBufferSize " ++ show p
+    CurlNoSignal p -> "CurlNoSignal " ++ show p
+    CurlShare p -> "CurlShare " ++ show p
+    CurlProxyType p -> "CurlProxyType " ++ show p
+    CurlEncoding p -> "CurlEncoding " ++ show p
+    CurlPrivate p -> "CurlPrivate " ++ show p
+    CurlHttp200Aliases p -> "CurlHttp200Aliases " ++ show p
+    CurlUnrestrictedAuth p -> "CurlUnrestrictedAuth " ++ show p
+    CurlFtppUseEPRT p -> "CurlFtppUseEPRT " ++ show p
+    CurlHttpAuth p -> "CurlHttpAuth " ++ show p
+    CurlSSLCtxFunction{} -> "CurlSSLCtxFunction <fun>"
+    CurlSSLCtxData p -> "CurlSSLCtxData " ++ show p
+    CurlFtpCreateMissingDirs p -> "CurlFtpCreateMissingDirs " ++ show p
+    CurlProxyAuth p -> "CurlProxyAuth " ++ show p
+    CurlFtpResponseTimeout p -> "CurlFtpResponseTimeout " ++ show p
+    CurlIPResolve p -> "CurlIPResolve " ++ show p
+    CurlMaxFileSize p -> "CurlMaxFileSize " ++ show p
+    CurlInFileSizeLarge p -> "CurlInFileSizeLarge " ++ show p
+    CurlResumeFromLarge p -> "CurlResumeFromLarge " ++ show p
+    CurlMaxFileSizeLarge p -> "CurlMaxFileSizeLarge " ++ show p
+    CurlNetrcFile p -> "CurlNetrcFile " ++ show p
+    CurlFtpSSL p -> "CurlFtpSSL " ++ show p
+    CurlPostFieldSizeLarge p -> "CurlPostFieldSizeLarge " ++ show p
+    CurlTCPNoDelay p -> "CurlTCPNoDelay " ++ show p
+    CurlFtpSSLAuth p -> "CurlFtpSSLAuth " ++ show p
+    CurlIOCTLFunction p -> "CurlIOCTLFunction " ++ show p
+    CurlIOCTLData p -> "CurlIOCTLData " ++ show p
+    CurlFtpAccount p -> "CurlFtpAccount " ++ show p
+    CurlCookieList p -> "CurlCookieList " ++ show p
+    CurlIgnoreContentLength p -> "CurlIgnoreContentLength " ++ show p
+    CurlFtpSkipPASVIP p -> "CurlFtpSkipPASVIP " ++ show p
+    CurlFtpFileMethod p -> "CurlFtpFileMethod " ++ show p
+    CurlLocalPort p -> "CurlLocalPort " ++ show p
+    CurlLocalPortRange p -> "CurlLocalPortRange " ++ show p
+    CurlConnectOnly p -> "CurlConnectOnly " ++ show p
+    CurlConvFromNetworkFunction p -> "CurlConvFromNetworkFunction " ++ show p
+    CurlConvToNetworkFunction p -> "CurlConvToNetworkFunction " ++ show p
+    CurlConvFromUtf8Function p -> "CurlConvFromUtf8Function " ++ show p
+    CurlMaxSendSpeedLarge p -> "CurlMaxSendSpeedLarge " ++ show p
+    CurlMaxRecvSpeedLarge p -> "CurlMaxRecvSpeedLarge " ++ show p
+    CurlFtpAlternativeToUser p -> "CurlFtpAlternativeToUser " ++ show p
+    CurlSockOptFunction p -> "CurlSockOptFunction " ++ show p
+    CurlSockOptData p -> "CurlSockOptData " ++ show p
+    CurlSSLSessionIdCache p -> "CurlSSLSessionIdCache " ++ show p
+    CurlSSHAuthTypes p -> "CurlSSHAuthTypes " ++ show p
+    CurlSSHPublicKeyFile p -> "CurlSSHPublicKeyFile " ++ show p
+    CurlSSHPrivateKeyFile p -> "CurlSSHPrivateKeyFile " ++ show p
+    CurlFtpSSLCCC p -> "CurlFtpSSLCCC " ++ show p
+    CurlTimeoutMS p -> "CurlTimeoutMS " ++ show p
+    CurlConnectTimeoutMS p -> "CurlConnectTimeoutMS " ++ show p
+    CurlHttpTransferDecoding p -> "CurlHttpTransferDecoding " ++ show p
+    CurlHttpContentDecoding p -> "CurlHttpContentDecoding " ++ show p

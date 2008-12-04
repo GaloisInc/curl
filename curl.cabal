@@ -1,5 +1,5 @@
 name:               curl
-version:            1.3.2.1
+version:            1.3.2.2
 synopsis:           Haskell binding to libcurl
 description:
     libcurl is a client-side URL transfer library, supporting FTP, FTPS, HTTP,
@@ -13,7 +13,7 @@ category:           Network
 license:            BSD3
 license-file:       LICENSE
 author:             Sigbjorn Finne
-maintainer:         emertens@galois.com, diatchki@.galois.com
+maintainer:         Sigbjorn Finne <sigbjorn.finne@gmail.com>
 build-depends:      base
 build-type:         Configure
 cabal-version:      >= 1.2

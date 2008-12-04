@@ -286,7 +286,7 @@ curlPost s ps = initialize >>= \ h -> do
   return ()
 
 -- Use 'callbackWriter' instead.
-{-# OBSOLETE #-}
+{-# DEPRECATED #-}
 easyWriter :: (String -> IO ()) -> WriteFunction
 easyWriter = callbackWriter
 

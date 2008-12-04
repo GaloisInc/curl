@@ -1,4 +1,5 @@
-{-# OPTIONS -fffi -fvia-C -#include "curl/curl.h" #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# OPTIONS -fvia-C -#include "curl/curl.h" #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Post
@@ -35,12 +36,13 @@ data HttpPost
      , extraHeaders :: [Header]
 -- not yet:     , extraEntries :: [HttpPost]
      , showName     :: Maybe String
-     }
+     } deriving ( Show )
 
 data Content
  = ContentFile   FilePath
  | ContentBuffer (Ptr CChar) Long -- byte arrays also?
  | ContentString String
+   deriving ( Show )
 
 multiformString :: String -> String -> HttpPost
 multiformString x y = 
