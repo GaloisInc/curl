@@ -2,11 +2,11 @@
 {-# OPTIONS -fvia-C -#include "curl/curl.h" #-}
 --------------------------------------------------------------------
 -- |
--- Module    : Curl.Code
--- Copyright : (c) Galois Inc 2007
+-- Module    : Network.Curl.Code
+-- Copyright : (c) Galois Inc 2007-2009
 -- License   : BSD3
 --
--- Maintainer: sof@galois.com
+-- Maintainer: Sigbjorn Finne <sof@galois.com>
 -- Stability : provisional
 -- Portability: portable
 --
@@ -100,6 +100,9 @@ data CurlCode
  | CurlRemoveFileNotFound
  | CurlSSH
  | CurlSSLShutdownFailed
+ | CurlAgain
+ | CurlSSLCRLBadFile
+ | CurlSSLIssuerError
    deriving ( Eq, Show, Enum )
 
 toCode :: CInt -> CurlCode

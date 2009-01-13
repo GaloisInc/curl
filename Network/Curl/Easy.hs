@@ -2,11 +2,11 @@
 {-# OPTIONS -fvia-C -#include "curl/curl.h" #-}
 --------------------------------------------------------------------
 -- |
--- Module    : Curl.Easy
--- Copyright : (c) Galois Inc 2007
+-- Module    : Network.Curl.Easy
+-- Copyright : (c) Galois Inc 2007-2009
 -- License   :
 --
--- Maintainer: emertens@galois.com
+-- Maintainer: Sigbjorn Finne <sof@galois.com>
 -- Stability : provisional
 -- Portability: portable
 --

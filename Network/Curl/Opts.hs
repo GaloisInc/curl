@@ -1,10 +1,10 @@
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Opts
--- Copyright : (c) Galois Inc 2007
+-- Copyright : (c) Galois Inc 2007-2009
 -- License   : BSD3
 --
--- Maintainer: emertens@galois.com
+-- Maintainer: Sigbjorn Finne <sof@galois.com>
 -- Stability : provisional
 -- Portability: portable
 --
@@ -164,6 +164,24 @@ data CurlOption
  | CurlConnectTimeoutMS Long            -- ^ Max number of milliseconds that a connection attempt may take to complete.
  | CurlHttpTransferDecoding Bool        -- ^ Disable transfer decoding; if disabled, curl will turn off chunking.
  | CurlHttpContentDecoding  Bool        -- ^ Disable content decoding, getting the raw bits.
+   -- sync'ed wrt 7.19.2
+ | CurlNewFilePerms Long
+ | CurlNewDirectoryPerms Long
+ | CurlPostRedirect Bool
+   -- no support for open socket callbacks/function overrides.
+ | CurlSSHHostPublicKeyMD5 String
+ | CurlCopyPostFields Bool
+ | CurlProxyTransferMode Long
+   -- no support for seeking in the input stream.
+ | CurlCRLFile       FilePath
+ | CurlIssuerCert    FilePath
+ | CurlAddressScope  Long
+ | CurlCertInfo      Long
+ | CurlUserName      String
+ | CurlUserPassword  String
+ | CurlProxyUser     String
+ | CurlProxyPassword String
+  
 
 instance Show CurlOption where
   show x = showCurlOption x
@@ -463,6 +481,20 @@ unmarshallOption um c =
   CurlConnectTimeoutMS x -> u_long um (l 156) x
   CurlHttpTransferDecoding x -> u_bool um (l 157) x
   CurlHttpContentDecoding x ->  u_bool um (l 158) x
+  CurlNewFilePerms x        -> u_long um (l 159) x
+  CurlNewDirectoryPerms x   -> u_long um (l 160) x
+  CurlPostRedirect x        -> u_bool um (l 161) x
+  CurlSSHHostPublicKeyMD5 x -> u_string um (l 162) x
+  CurlCopyPostFields x      -> u_bool um (l 165) x
+  CurlProxyTransferMode x   -> u_long um (l 166) x
+  CurlCRLFile x             -> u_string um (l 169) x
+  CurlIssuerCert x          -> u_string um (l 170) x
+  CurlAddressScope x        -> u_long um   (l 171) x
+  CurlCertInfo x            -> u_long um   (l 172) x
+  CurlUserName x            -> u_string um (l 173) x
+  CurlUserPassword x        -> u_string um (l 174) x
+  CurlProxyUser x           -> u_string um (l 175) x
+  CurlProxyPassword x       -> u_string um (l 176) x
 
 data Unmarshaller a
  = Unmarshaller

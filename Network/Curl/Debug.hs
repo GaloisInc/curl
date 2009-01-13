@@ -1,10 +1,10 @@
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Debug
--- Copyright : (c) Galois, Inc. 2008
+-- Copyright : (c) Galois, Inc. 2008-2009
 -- License   : BSD3
 --
--- Maintainer: emertens@galois.com
+-- Maintainer: Sigbjorn Finne <sof@galois.com>
 -- Stability : provisional
 -- Portability:
 --

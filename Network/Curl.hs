@@ -1,10 +1,10 @@
 --------------------------------------------------------------------
 -- |
--- Module    : Curl
--- Copyright : (c) Galois Inc 2007-8
+-- Module    : Network.Curl
+-- Copyright : (c) Galois Inc 2007-9
 -- License   : BSD3
 --
--- Maintainer: emertens@galois.com
+-- Maintainer: Sigbjorn Finne <sof@galois.com>
 -- Stability : provisional
 -- Portability: portable
 --
