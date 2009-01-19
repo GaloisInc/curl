@@ -1,7 +1,7 @@
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl
--- Copyright : (c) Galois Inc 2007-9
+-- Copyright : (c) 2007-2009, Galois Inc 
 -- License   : BSD3
 --
 -- Maintainer: Sigbjorn Finne <sof@galois.com>
@@ -42,6 +42,8 @@ module Network.Curl
        , perform_with_response -- :: Curl -> IO CurlResponse
        , do_curl
 
+       , curlGetByteString   -- :: URLString -> [CurlOption] -> IO (CurlCode, [ByteString])
+
           -- probing for gold..
        , curlHead            -- :: URLString
                              -- -> [CurlOption]
@@ -60,12 +62,15 @@ module Network.Curl
        , easyWriter          -- :: (String -> IO ()) -> WriteFunction
        , ignoreOutput        -- :: WriteFunction
        , gatherOutput        -- :: IORef [String] -> WriteFunction
+       , gatherOutputBS      -- :: IORef [ByteString] -> WriteFunction
 
        , method_GET          -- :: [CurlOption]
        , method_HEAD         -- :: [CurlOption]
        , method_POST         -- :: [CurlOption]
 
-       , parseStatusNHeaders, concRev
+       , parseStatusNHeaders
+          -- ToDo: get rid of
+       , concRev
        ) where
 
 import Network.Curl.Opts
@@ -80,11 +85,7 @@ import Data.IORef
 import Data.List(isPrefixOf)
 import System.IO
 
-{- pass along the action you want to perform during its lifetime.
-{-# OBSOLETE #-}
-withCurl :: (Curl -> IO a) -> IO a
-withCurl act = act =<< initialize
--}
+import Data.ByteString ( ByteString, packCStringLen )
 
 -- | Should be used once to wrap all uses of libcurl.
 -- WARNING: the argument should not return before it
@@ -148,6 +149,25 @@ curlGetString url opts = initialize >>= \ h -> do
   rc <- perform h
   lss <- readIORef ref
   return (rc, concat $ reverse lss)
+
+-- | @curlGetByteString@ is identical to 'curlGetString', but returns
+-- the response body in the form of a (sequence of) 'ByteString's.
+-- Glom them together (at your own leisure) to get the 
+curlGetByteString :: URLString
+                  -> [CurlOption]
+		  -> IO (CurlCode, [ByteString])
+curlGetByteString url opts = initialize >>= \ h -> do
+  ref <- newIORef []
+   -- Note: later options may (and should, probably) override these defaults.
+  setopt h (CurlFailOnError True)
+  setDefaultSSLOpts h url
+  setopt h (CurlURL url)
+  setopt h (CurlWriteFunction (gatherOutputBS ref))
+  mapM_ (setopt h) opts
+  rc <- perform h
+  lss <- readIORef ref
+  return (rc, reverse lss)
+
 
 -- | 'CurlResponse' is a record type encoding all the information
 -- embodied in a response to your Curl request. Currently only used
@@ -297,6 +317,13 @@ callbackWriter f pBuf sz szI _ =
      f =<< peekCStringLen (pBuf,fromIntegral bytes)
      return bytes
 
+-- | Imports data into the Haskell world and invokes the callback.
+callbackWriterBS :: (ByteString -> IO ()) -> WriteFunction
+callbackWriterBS f pBuf sz szI _ = do
+  do let bytes = sz * szI 
+     f =<< packCStringLen (pBuf,fromIntegral bytes)
+     return bytes
+
 -- | The output of Curl is ignored.  This function
 -- does not marshall data into Haskell.
 ignoreOutput :: WriteFunction
@@ -304,8 +331,11 @@ ignoreOutput _ x y _ = return (x*y)
 
 -- | Add chunks of data to an IORef as they arrive.
 gatherOutput :: IORef [String] -> WriteFunction
-gatherOutput r = callbackWriter $ \xs -> do xss <- readIORef r
-                                            writeIORef r (xs:xss)
+gatherOutput r = callbackWriter (\ v -> modifyIORef r (v:))
+
+-- | Add chunks of data to an IORef as they arrive.
+gatherOutputBS :: IORef [ByteString] -> WriteFunction
+gatherOutputBS r = callbackWriterBS (\ v -> modifyIORef r (v:))
 
 getResponseCode :: Curl -> IO Int
 getResponseCode c = do
