@@ -3,7 +3,7 @@
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Info
--- Copyright : (c) Galois Inc 2007-2009
+-- Copyright : (c) 2007-2009, Galois Inc 
 -- License   : BSD3
 --
 -- Maintainer: Sigbjorn Finne <sof@galois.com>
