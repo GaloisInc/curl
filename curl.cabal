@@ -18,7 +18,7 @@ maintainer:         Sigbjorn Finne <sigbjorn.finne@gmail.com>
 build-depends:      base
 build-type:         Configure
 cabal-version:      >= 1.2
-extra-source-files: configure, configure.ac, curl.buildinfo.in
+extra-source-files: configure, configure.ac, curl.buildinfo.in, CHANGES
 
 flag new-base
   Description: Build with new smaller base library
