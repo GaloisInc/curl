@@ -25,6 +25,9 @@ module Network.Curl.Easy
 
         , curl_global_init    -- :: CInt -> IO CurlCode
         , curl_global_cleanup -- :: IO ()
+	
+	, curl_version_number -- :: IO Int
+	, curl_version_string -- :: IO String
         ) where
 
 import Network.Curl.Types
@@ -147,8 +150,24 @@ perform hh = liftM toCode $ curlPrim hh $ \_ h -> easy_perform_prim h
 curl_global_init :: CInt -> IO CurlCode
 curl_global_init v = liftM toCode $ curl_global_init_prim v
 
+curl_version_number :: IO Int
+curl_version_number = do
+  x <- curl_version_num 
+  return (fromIntegral x)
+  
+curl_version_string :: IO String
+curl_version_string = do
+  cs <- curl_version_str
+  peekCString cs
+
 -- FFI decls
 
+
+foreign import ccall
+  "curl_version_num" curl_version_num :: IO CInt
+
+foreign import ccall
+  "curl_version_str" curl_version_str :: IO CString
 
 foreign import ccall
   "curl/easy.h curl_global_init" curl_global_init_prim :: CInt -> IO CInt
