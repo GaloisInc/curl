@@ -692,3 +692,17 @@ showCurlOption o =
     CurlConnectTimeoutMS p -> "CurlConnectTimeoutMS " ++ show p
     CurlHttpTransferDecoding p -> "CurlHttpTransferDecoding " ++ show p
     CurlHttpContentDecoding p -> "CurlHttpContentDecoding " ++ show p
+    CurlNewFilePerms l -> "CurlNewFilePerms " ++ show l
+    CurlNewDirectoryPerms p -> "CurlNewDirectoryPerms " ++ show p
+    CurlPostRedirect p -> "CurlPostRedirect " ++ show p
+    CurlSSHHostPublicKeyMD5 p -> "CurlSSHHostPublicKeyMD5 " ++ show p
+    CurlCopyPostFields p -> "CurlCopyPostFields " ++ show p
+    CurlProxyTransferMode p -> "CurlProxyTransferMode " ++ show p
+    CurlCRLFile       p -> "CurlCRLFile " ++ show p
+    CurlIssuerCert    p -> "CurlIssuerCert " ++ show p
+    CurlAddressScope  p -> "CurlAddressScope " ++ show p
+    CurlCertInfo      p -> "CurlCertInfo " ++ show p
+    CurlUserName      p -> "CurlUserName " ++ show p
+    CurlUserPassword  p -> "CurlUserPassword " ++ show p
+    CurlProxyUser     p -> "CurlProxyUser " ++ show p
+    CurlProxyPassword p -> "CurlProxyPassword " ++ show p
