@@ -1,4 +1,4 @@
-{-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls #-}
+{-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls, CPP #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Types
@@ -25,9 +25,9 @@ import Network.Curl.Debug
 
 import Foreign.Ptr
 import Foreign.ForeignPtr
+import Foreign.Concurrent ( addForeignPtrFinalizer )
 import Data.Word
 import Control.Concurrent
-import Control.Monad.Fix(mfix)
 import Data.Maybe(fromMaybe)
 import qualified Data.IntMap as M
 import Data.IORef
@@ -64,16 +64,16 @@ mkCurl h = mkCurlWithCleanup h om_empty
 mkCurlWithCleanup :: CurlH -> OptionMap -> IO Curl
 mkCurlWithCleanup h clean = do
   debug "ALLOC: CURL"
+  v2  <- newIORef clean
   fh  <- newForeignPtr_ h 
   v1  <- newMVar fh
-  v2  <- newIORef clean
   let new_h = Curl { curlH = v1, curlCleanup = v2 }
   
-  fin <- mkIOfin $ do debug "FREE: CURL"
-                      easy_cleanup h
-                      runCleanup v2
-  addForeignPtrFinalizer fin fh
-
+  let fnalizr = do
+         debug "FREE: CURL"
+         easy_cleanup h
+         runCleanup v2
+  Foreign.Concurrent.addForeignPtrFinalizer fh fnalizr
   return new_h
 
 
@@ -137,17 +137,19 @@ shareIO act =
      return new_act
 --------------------------------------------------------------------------------
 
-
+{- UNUSED:
 -- FFI for inalizers.
 
 -- | Make a finalizer from an IO action.
 mkIOfin :: IO a -> IO (FinalizerPtr b)
 mkIOfin m = mfix (\ptr -> ioFinalizer (m >> freeHaskellFunPtr ptr))
 
-foreign import ccall 
-  "curl/curl.h curl_easy_cleanup" easy_cleanup :: CurlH -> IO ()
-
 foreign import ccall "wrapper"
   ioFinalizer :: IO () -> IO (FinalizerPtr a)
 
+
+-}
+
+foreign import ccall 
+  "curl/curl.h curl_easy_cleanup" easy_cleanup :: CurlH -> IO ()
 
