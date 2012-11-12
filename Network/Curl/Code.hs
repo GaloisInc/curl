@@ -1,9 +1,8 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
-{-# OPTIONS -fvia-C -#include "curl/curl.h" #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Code
--- Copyright : (c) Galois Inc 2007-2009
+-- Copyright : (c) Galois Inc 2007-2009, 2011
 -- License   : BSD3
 --
 -- Maintainer: Sigbjorn Finne <sof@galois.com>

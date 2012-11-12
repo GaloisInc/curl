@@ -31,7 +31,7 @@ import Control.Concurrent
 import Data.Maybe(fromMaybe)
 import qualified Data.IntMap as M
 import Data.IORef
-import System.IO
+-- import System.IO
 
 data Curl_
 type CurlH    = Ptr Curl_

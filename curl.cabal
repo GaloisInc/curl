@@ -1,5 +1,5 @@
 name:               curl
-version:            1.3.5
+version:            1.3.7
 synopsis:           Haskell binding to libcurl
 description:
     libcurl is a client-side URL transfer library, supporting FTP, FTPS, HTTP,
@@ -14,8 +14,7 @@ category:           Network
 license:            BSD3
 license-file:       LICENSE
 author:             Sigbjorn Finne
-maintainer:         Sigbjorn Finne <sigbjorn.finne@gmail.com>
-build-depends:      base
+maintainer:         Don Stewart <dons00@gmail.com>
 build-type:         Configure
 cabal-version:      >= 1.2
 extra-source-files: configure, configure.ac, curl.buildinfo.in, CHANGES
@@ -34,15 +33,15 @@ library
                    Network.Curl.Easy
                    Network.Curl.Debug
 
-  c-sources: curlc.c
-  Extra-libraries: curl
-  Extensions:      CPP, ForeignFunctionInterface
-  Ghc-options:     -Wall -fvia-C
+  c-sources:        curlc.c
+  Extra-libraries:  curl
+  Extensions:       CPP, ForeignFunctionInterface
+  Ghc-options:      -Wall
 
   Build-Depends: base
   if flag(new-base)
-    Build-depends: base >= 3 && < 4, containers
+    Build-depends: base >= 3 && < 5, containers
   else
     Build-depends: base < 3
 
-  build-depends: bytestring
+  build-depends: bytestring >= 0.9

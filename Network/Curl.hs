@@ -1,4 +1,6 @@
-{-# OPTIONS_GHC -XTypeSynonymInstances -XFlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances   #-}
+{-# LANGUAGE FlexibleInstances      #-}
+{-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl
@@ -95,7 +97,7 @@ import Network.Curl.Easy
 import Foreign.C.String
 import Data.IORef
 import Data.List(isPrefixOf)
-import System.IO
+-- import System.IO
 import Control.Exception ( finally )
 
 import Data.ByteString ( ByteString, packCStringLen )

@@ -1,5 +1,4 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
-{-# OPTIONS -fvia-C -#include "curl/curl.h" #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Post

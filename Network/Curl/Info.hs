@@ -1,5 +1,4 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
-{-# OPTIONS -fvia-C -#include "curl/curl.h" #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Info
@@ -76,6 +75,7 @@ instance Show InfoValue where
        IDouble d -> show d
        IList ss  -> show ss
 
+{-
 stringTag :: Long
 stringTag = 0x100000  -- CURLINFO_STRING
 
@@ -87,6 +87,7 @@ doubleTag = 0x300000  -- CURLINFO_DOUBLE
 
 slistTag :: Long
 slistTag = 0x400000  -- CURLINFO_SLIST
+-}
 
 {- unused, unexported
 infoMask :: Long
