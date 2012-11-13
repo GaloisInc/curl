@@ -16,7 +16,7 @@ license-file:       LICENSE
 author:             Sigbjorn Finne
 maintainer:         Don Stewart <dons00@gmail.com>
 build-type:         Configure
-cabal-version:      >= 1.2
+cabal-version:      >= 1.6
 extra-source-files: configure, configure.ac, curl.buildinfo.in, CHANGES
 
 flag new-base
@@ -45,3 +45,8 @@ library
     Build-depends: base < 3
 
   build-depends: bytestring >= 0.9
+
+source-repository head
+  type:     git
+  location: git://github.com/galoisinc/curl.git
+
