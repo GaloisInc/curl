@@ -35,13 +35,13 @@ data HttpPost
      , extraHeaders :: [Header]
 -- not yet:     , extraEntries :: [HttpPost]
      , showName     :: Maybe String
-     } deriving ( Show )
+     } deriving ( Eq, Show )
 
 data Content
  = ContentFile   FilePath
  | ContentBuffer (Ptr CChar) Long -- byte arrays also?
  | ContentString String
-   deriving ( Show )
+   deriving ( Eq, Show )
 
 multiformString :: String -> String -> HttpPost
 multiformString x y = 
