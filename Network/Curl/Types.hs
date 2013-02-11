@@ -50,7 +50,7 @@ data Curl = Curl
 
 
 -- | Execute a "primitve" curl operation.
--- NOTE: See warnings about the use of 'withForeginPtr'.
+-- NOTE: See warnings about the use of 'withForeignPtr'.
 curlPrim :: Curl -> (IORef OptionMap -> CurlH -> IO a) -> IO a
 curlPrim c f  = withMVar (curlH c) $ \ h ->
                 withForeignPtr h   $ f $ curlCleanup c
