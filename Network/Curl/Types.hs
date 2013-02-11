@@ -49,7 +49,7 @@ data Curl = Curl
   }  
 
 
--- | Execute a "primitve" curl operation.
+-- | Execute a "primitive" curl operation.
 -- NOTE: See warnings about the use of 'withForeignPtr'.
 curlPrim :: Curl -> (IORef OptionMap -> CurlH -> IO a) -> IO a
 curlPrim c f  = withMVar (curlH c) $ \ h ->
