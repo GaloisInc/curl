@@ -34,6 +34,7 @@ library
                    Network.Curl.Debug
 
   c-sources:        curlc.c
+  cc-options:       -fPCI
   Extra-libraries:  curl
   Extensions:       CPP, ForeignFunctionInterface
   Ghc-options:      -Wall
