@@ -24,9 +24,9 @@ module Network.Curl.Easy
 
         , curl_global_init    -- :: CInt -> IO CurlCode
         , curl_global_cleanup -- :: IO ()
-	
-	, curl_version_number -- :: IO Int
-	, curl_version_string -- :: IO String
+
+        , curl_version_number -- :: IO Int
+        , curl_version_string -- :: IO String
         ) where
 
 import Network.Curl.Types
@@ -48,7 +48,7 @@ import Data.Maybe
 initialize :: IO Curl
 initialize = do
   h <- easy_initialize
-  mkCurl h 
+  mkCurl h
 
 -- XXX: Is running cleanup here OK?
 reset :: Curl -> IO ()
@@ -66,7 +66,7 @@ setopt :: Curl
 setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
  where
   easy_um :: IORef OptionMap -> CurlH -> Unmarshaller CurlCode
-  easy_um r h = 
+  easy_um r h =
     Unmarshaller
     { u_long    -- :: Int -> Long     -> IO CurlCode
        = \ i x -> liftM toCode $ easy_setopt_long h i x
@@ -83,8 +83,8 @@ setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
        = \ i x ->
            do debug ("ALLOC: " ++ show x)
               -- curl_slist_append will copy its string argument
-              let addOne ip s = withCString s $ curl_slist_append ip 
-              ip <- foldM addOne nullPtr x 
+              let addOne ip s = withCString s $ curl_slist_append ip
+              ip <- foldM addOne nullPtr x
               updateCleanup r i $
                 debug ("FREE: " ++ show x) >> curl_slist_free ip
               liftM toCode $ easy_setopt_string h i (castPtr ip)
@@ -107,15 +107,15 @@ setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
             liftM toCode $ easy_setopt_rfun h i fp
      , u_progressFun -- :: Int -> ProgressFunction -> IO a
        = \ i x -> do
-            debug "ALLOC: PROGRESS" 
+            debug "ALLOC: PROGRESS"
             fp <- mkProgress x
             updateCleanup r i $ debug "FREE: PROGRESS" >> freeHaskellFunPtr fp
             liftM toCode $ easy_setopt_fptr h i fp
      , u_debugFun -- :: Int -> DebugFunction -> IO a
        = \ i debFun -> do
-            let wrapFun fun _a b c d e = 
+            let wrapFun fun _a b c d e =
                   fun hh (toEnum (fromIntegral b)) c d e >> return 0
-            debug "ALLOC: DEBUG" 
+            debug "ALLOC: DEBUG"
             fp <- mkDebugFun (wrapFun debFun)
             updateCleanup r i $ debug "FREE: DEBUG" >> freeHaskellFunPtr fp
             liftM toCode $ easy_setopt_fptr h i fp
@@ -124,7 +124,7 @@ setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
            debug "ALLOC: POSTS"
            p <- marshallPosts x
            updateCleanup r i $ debug "FREE: POSTS" >> curl_formfree p
-           liftM toCode $ easy_setopt_ptr h i p 
+           liftM toCode $ easy_setopt_ptr h i p
      , u_sslctxt  -- :: Int -> SSLCtxtFunction -> IO a
        = \ i x -> do
            debug "ALLOC: SSL_FUN"
@@ -151,9 +151,9 @@ curl_global_init v = liftM toCode $ curl_global_init_prim v
 
 curl_version_number :: IO Int
 curl_version_number = do
-  x <- curl_version_num 
+  x <- curl_version_num
   return (fromIntegral x)
-  
+
 curl_version_string :: IO String
 curl_version_string = do
   cs <- curl_version_str
