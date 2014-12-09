@@ -1,5 +1,5 @@
 name:               curl
-version:            1.3.8.1
+version:            1.3.8.2
 synopsis:           Haskell binding to libcurl
 description:
     libcurl is a client-side URL transfer library, supporting FTP, FTPS, HTTP,

@@ -36,6 +36,7 @@ import Network.Curl.Post
 
 import Network.Curl.Debug
 
+import Control.Exception
 import Data.IORef(IORef)
 import Foreign.Ptr
 import Foreign.Marshal.Alloc(free)
@@ -46,16 +47,16 @@ import Data.Maybe
 
 -- | Initialise a curl instance
 initialize :: IO Curl
-initialize = do
+initialize = mask_ $ do
   h <- easy_initialize
-  mkCurl h 
+  mkCurl h
 
 -- XXX: Is running cleanup here OK?
 reset :: Curl -> IO ()
-reset hh = curlPrim hh $ \r h -> easy_reset h >> runCleanup r
+reset hh = mask_ . curlPrim hh $ \r h -> easy_reset h >> runCleanup r
 
 duphandle :: Curl -> IO Curl
-duphandle hh = curlPrim hh $ \r h ->
+duphandle hh = mask_ . curlPrim hh $ \r h ->
   do h1      <- easy_duphandle h
      cleanup <- shareCleanup r
      mkCurlWithCleanup h1 cleanup
@@ -67,7 +68,7 @@ duphandle hh = curlPrim hh $ \r h ->
 setopt :: Curl
        -> CurlOption
        -> IO CurlCode
-setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
+setopt hh o = mask_ . curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
  where
   easy_um :: IORef OptionMap -> CurlH -> Unmarshaller CurlCode
   easy_um r h = 
