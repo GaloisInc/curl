@@ -283,7 +283,7 @@ type ProgressFunction
  -> IO CInt --  not sure; 0 is a good one.
 
 type DebugFunction
-  = Curl       --  connection handle
+  = CurlH      --  connection handle
  -> DebugInfo  --  type of call
  -> Ptr CChar  --  data buffer
  -> CInt       --  length of buffer

@@ -60,6 +60,10 @@ duphandle hh = curlPrim hh $ \r h ->
      cleanup <- shareCleanup r
      mkCurlWithCleanup h1 cleanup
 
+-- | Note that functions passed in options can't reference Curl object
+-- ifself as this creates mutual dependency between function converted
+-- to C function pointer and the object, preventing the object from
+-- being garbage collected (see the description of 'freeHaskellFunPtr').
 setopt :: Curl
        -> CurlOption
        -> IO CurlCode
@@ -113,8 +117,8 @@ setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
             liftM toCode $ easy_setopt_fptr h i fp
      , u_debugFun -- :: Int -> DebugFunction -> IO a
        = \ i debFun -> do
-            let wrapFun fun _a b c d e = 
-                  fun hh (toEnum (fromIntegral b)) c d e >> return 0
+            let wrapFun fun a b c d e =
+                  fun a (toEnum (fromIntegral b)) c d e >> return 0
             debug "ALLOC: DEBUG" 
             fp <- mkDebugFun (wrapFun debFun)
             updateCleanup r i $ debug "FREE: DEBUG" >> freeHaskellFunPtr fp
