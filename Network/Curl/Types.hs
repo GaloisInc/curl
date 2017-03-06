@@ -1,4 +1,4 @@
-{-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls, CPP #-}
+{-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Types

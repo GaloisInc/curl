@@ -35,7 +35,7 @@ library
 
   c-sources:        curlc.c
   Extra-libraries:  curl
-  Extensions:       CPP, ForeignFunctionInterface
+  Extensions:       ForeignFunctionInterface
   Ghc-options:      -Wall
 
   Build-Depends: base
