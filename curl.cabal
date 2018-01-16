@@ -21,7 +21,7 @@ extra-source-files: configure, configure.ac, curl.buildinfo.in, CHANGES
 
 flag new-base
   Description: Build with new smaller base library
-  Default: False
+  Default: True
 
 library
   Exposed-modules: Network.Curl
