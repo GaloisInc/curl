@@ -190,6 +190,7 @@ data HttpVersion
  = HttpVersionNone
  | HttpVersion10
  | HttpVersion11
+ | HttpVersion20
    deriving ( Enum,Show )
 
 data TimeCond
