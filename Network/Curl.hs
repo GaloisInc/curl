@@ -4,7 +4,7 @@
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl
--- Copyright : (c) 2007-2009, Galois Inc 
+-- Copyright : (c) 2007-2009, Galois Inc
 -- License   : BSD3
 --
 -- Maintainer: Sigbjorn Finne <sof@galois.com>
@@ -31,7 +31,7 @@ module Network.Curl
        , module Network.Curl.Types
        , module Network.Curl.Code
 
-         -- controlled export of this module: 
+         -- controlled export of this module:
          -- (ToDo: tighten it up even more)
        , withCurlDo          -- :: IO a -> IO a
        , setopts             -- :: Curl -> [CurlOption] -> IO ()
@@ -63,7 +63,7 @@ module Network.Curl
        , curlMultiPost       -- :: URLString -> [CurlOption] -> [HttpPost] -> IO ()
        , curlPost            -- :: URLString -> [String] -> IO ()
 
-          -- 
+          --
        , getResponseCode     -- :: Curl -> IO Int
 
           -- supporting cast
@@ -112,7 +112,7 @@ import qualified Data.ByteString.Lazy as LazyBS ( ByteString, fromChunks )
 --
 class CurlBuffer bufferTy where
   newIncoming    :: IO (IO bufferTy, CStringLen -> IO ())
-  
+
 
 -- | The @CurlHeader@ class encodes the representation
 -- of response headers. Similar to 'CurlBuffer'.
@@ -172,7 +172,7 @@ method_POST  :: [CurlOption]
 method_POST   = [CurlPost True, CurlNoBody False]
 
 method_HEAD  :: [CurlOption]
-method_HEAD   = [CurlPost False, CurlNoBody True] 
+method_HEAD   = [CurlPost False, CurlNoBody True]
 
 -- | 'curlGet' perform a basic GET, dumping the output on stdout.
 -- The list of options are set prior performing the GET request.
@@ -197,7 +197,7 @@ setDefaultSSLOpts h url
          ]
  | otherwise = return ()
 
--- | 'curlGetString' performs the same request as 'curlGet', but 
+-- | 'curlGetString' performs the same request as 'curlGet', but
 -- returns the response body as a Haskell string.
 curlGetString :: URLString
               -> [CurlOption]
@@ -261,7 +261,7 @@ curlGetResponse_ url opts = do
   mapM_ (setopt h) opts
   -- note that users cannot over-write the body and header handler
   -- which makes sense because otherwise we will return a bogus reposnse.
-  perform_with_response_ h 
+  perform_with_response_ h
 
 {-# DEPRECATED curlGetResponse "Switch to using curlGetResponse_" #-}
 curlGetResponse :: URLString
@@ -275,7 +275,7 @@ curlGetResponse url opts = curlGetResponse_ url opts
 -- 'CurlWriteFunction' and 'CurlHeaderFunction' options.
 perform_with_response :: (CurlHeader hdrTy, CurlBuffer bufTy)
                       => Curl
-		      -> IO (CurlResponse_ hdrTy bufTy)
+                      -> IO (CurlResponse_ hdrTy bufTy)
 perform_with_response h = perform_with_response_ h
 
 {-# DEPRECATED perform_with_response "Consider switching to perform_with_response_" #-}
@@ -288,7 +288,7 @@ perform_with_response h = perform_with_response_ h
 -- both headers and body via the 'CurlResponse_' type.
 perform_with_response_ :: (CurlHeader headerTy, CurlBuffer bodyTy)
                        => Curl
-		       -> IO (CurlResponse_ headerTy bodyTy)
+                       -> IO (CurlResponse_ headerTy bodyTy)
 perform_with_response_ h = do
    (finalHeader, gatherHeader) <- newIncomingHeader
    (finalBody,   gatherBody)   <- newIncoming
@@ -308,7 +308,7 @@ perform_with_response_ h = do
        , respStatus     = rspCode
        , respStatusLine = st
        , respHeaders    = hs
-       , respBody       = bs 
+       , respBody       = bs
        -- note: we're holding onto the handle here..
        -- note: with this interface this is not neccessary.
        , respGetInfo    = getInfo h
@@ -324,9 +324,9 @@ do_curl h url opts = do_curl_ h url opts
 
 do_curl_ :: (CurlHeader headerTy, CurlBuffer bodyTy)
          => Curl
-	 -> URLString
-	 -> [CurlOption]
-	 -> IO (CurlResponse_ headerTy bodyTy)
+         -> URLString
+         -> [CurlOption]
+         -> IO (CurlResponse_ headerTy bodyTy)
 do_curl_ h url opts = do
    setDefaultSSLOpts h url
    setopts h opts
@@ -337,7 +337,7 @@ do_curl_ h url opts = do
 -- | Get the headers associated with a particular URL.
 -- Returns the status line and the key-value pairs for the headers.
 curlHead :: URLString -> [CurlOption] -> IO (String,[(String,String)])
-curlHead url opts = initialize >>= \ h -> 
+curlHead url opts = initialize >>= \ h ->
   do ref <- newIORef []
 --     setopt h (CurlVerbose True)
      setopt h (CurlURL url)
@@ -352,8 +352,8 @@ curlHead url opts = initialize >>= \ h ->
 -- Returns the status line and the key-value pairs for the headers.
 curlHead_ :: (CurlHeader headers)
           => URLString
-	  -> [CurlOption]
-	  -> IO (String, headers)
+          -> [CurlOption]
+          -> IO (String, headers)
 curlHead_ url opts = initialize >>= \ h -> do
   (finalHeader, gatherHeader) <- newIncomingHeader
 --  setopt h (CurlVerbose True)
@@ -375,17 +375,17 @@ parseStatusNHeaders :: String -> (String, [(String,String)])
 parseStatusNHeaders ys =
   case intoLines [] ys of
    a:as  -> (a,map parseHeader as)
-   []    -> ("",[]) 
+   []    -> ("",[])
  where
   intoLines acc "" = addLine acc []
   intoLines acc ('\r':'\n':xs) = addLine acc (intoLines "" xs)
   intoLines acc (x:xs) = intoLines (x:acc) xs
-  
+
   addLine "" ls = ls
   addLine  l ls = (reverse l) : ls
-  
+
 parseHeader :: String -> (String,String)
-parseHeader xs = 
+parseHeader xs =
   case break (':' ==) xs of
    (as,_:bs) -> (as, bs)
    (as,_)    -> (as,"")
@@ -419,15 +419,15 @@ easyWriter = callbackWriter
 
 -- | Imports data into the Haskell world and invokes the callback.
 callbackWriter :: (String -> IO ()) -> WriteFunction
-callbackWriter f pBuf sz szI _ = 
-  do let bytes = sz * szI 
+callbackWriter f pBuf sz szI _ =
+  do let bytes = sz * szI
      f =<< peekCStringLen (pBuf,fromIntegral bytes)
      return bytes
 
 -- | Imports data into the Haskell world and invokes the callback.
 callbackWriter_ :: (CStringLen -> IO ()) -> WriteFunction
 callbackWriter_ f pBuf sz szI _ = do
-  do let bytes = sz * szI 
+  do let bytes = sz * szI
      f (pBuf,fromIntegral bytes)
      return bytes
 
@@ -448,7 +448,7 @@ getResponseCode :: Curl -> IO Int
 getResponseCode c = do
    iv <- getInfo c ResponseCode
    case iv of
-     IString s -> 
+     IString s ->
        case (reads s) of
          ((v,_):_) -> return v
          _ -> fail ("Curl.getResponseCode: not a valid integer string " ++ s)
