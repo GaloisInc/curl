@@ -56,6 +56,7 @@ data Info
  | OSErrno
  | NumConnects
  | SslEngines
+ | LocalPort
  | CookieList
  | LastSocket
  | FtpEntryPath
@@ -127,6 +128,7 @@ getInfo h i = do
    OSErrno -> getInfoLong h (show i) 25
    NumConnects -> getInfoLong h (show i) 26
    SslEngines -> getInfoSList h (show i) 27
+   LocalPort -> getInfoLong h (show i) 42
    CookieList -> getInfoSList h (show i) 28
    LastSocket -> getInfoLong h (show i) 29
    FtpEntryPath -> getInfoStr h (show i) 30
