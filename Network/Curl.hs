@@ -412,19 +412,18 @@ curlPost s ps = initialize >>= \ h -> do
   perform h
   return ()
 
-curlPostString :: URLString -> [String] -> IO (CurlCode, String)
-curlPostString url opts = initialize >>= \ h -> do
+curlPostString :: URLString -> [CurlOption] -> IO (CurlCode, String)
+curlPostString s ps = initialize >>= \ h -> do
   ref <- newIORef []
 
   setopt h (CurlFailOnError True)
-  setDefaultSSLOpts h url
+  setDefaultSSLOpts h s
   setopt h (CurlVerbose True)
-  setopt h (CurlPostFields ps)
   setopt h (CurlCookieJar "cookies")
   setopt h (CurlURL s)
 
   setopt h (CurlWriteFunction (gatherOutput ref))
-  mapM_ (setopt h) opts
+  mapM_ (setopt h) ps
   rc <- perform h
   lss <- readIORef ref
   return (rc, concat $ reverse lss)
