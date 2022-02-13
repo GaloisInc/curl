@@ -412,6 +412,22 @@ curlPost s ps = initialize >>= \ h -> do
   perform h
   return ()
 
+curlPostString :: URLString -> [CurlOption] -> IO (CurlCode, String)
+curlPostString s ps = initialize >>= \ h -> do
+  ref <- newIORef []
+
+  setopt h (CurlFailOnError True)
+  setDefaultSSLOpts h s
+  setopt h (CurlVerbose True)
+  setopt h (CurlCookieJar "cookies")
+  setopt h (CurlURL s)
+
+  setopt h (CurlWriteFunction (gatherOutput ref))
+  mapM_ (setopt h) ps
+  rc <- perform h
+  lss <- readIORef ref
+  return (rc, concat $ reverse lss)
+
 -- Use 'callbackWriter' instead.
 {-# DEPRECATED #-}
 easyWriter :: (String -> IO ()) -> WriteFunction
