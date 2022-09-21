@@ -11,15 +11,20 @@
 -- Stability : provisional
 -- Portability: portable
 --
--- A Haskell binding the libcurl library <http://curl.se/>, a
+-- A Haskell binding the @libcurl@ library <http://curl.se/>, a
 -- proven and feature-rich library for interacting with HTTP(S)\/FTP
 -- servers.
 --
--- The binding was initially made against version 7.16.2; libcurl does
+-- The binding was initially made against version 7.16.2; @libcurl@ does
 -- appear to be considerate in not introducing breaking changes wrt
 -- older versions. So, unless you're after the latest features (i.e.,
 -- constructors towards the end the Option type), there's a very good
--- chance your code will work against older installations of libcurl.
+-- chance your code will work against older installations of @libcurl@.
+--
+-- __Warning:__ Any POSIX executable using this package needs to be
+-- linked with the threaded runtime. @libcurl@ is incompatible with
+-- the non-threaded runtime due to the latter's [use of OS signals to
+-- implement timers](https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/rts/signals).
 --
 --------------------------------------------------------------------
 
@@ -153,7 +158,7 @@ instance CurlBuffer LazyBS.ByteString where
     let readFinal = readIORef ref >>= return . LazyBS.fromChunks . reverse
     return (readFinal, \ v -> packCStringLen v >>= \ x -> modifyIORef ref (x:))
 
--- | Should be used once to wrap all uses of libcurl.
+-- | Should be used once to wrap all uses of @libcurl@.
 -- WARNING: the argument should not return before it
 -- is completely done with curl (e.g., no forking or lazy returns)
 withCurlDo :: IO a -> IO a
