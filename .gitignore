@@ -1,5 +1,6 @@
 *~
-dist
+dist/
+dist-newstyle/
 Network/Curl/*_stub.*
 config.log
 config.status

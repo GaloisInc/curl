@@ -254,24 +254,24 @@ toSSHAuthMask (x:xs) =
 
 type WriteFunction
   = Ptr CChar  --  pointer to external buffer holding data
- -> CInt       --  width (in bytes) of each item
- -> CInt       --  number of items
+ -> CSize      --  width (in bytes) of each item
+ -> CSize      --  number of items
  -> Ptr ()     --  state argument (file pointer etc.)
- -> IO CInt    --  number of bytes written.
+ -> IO CSize   --  number of bytes written.
 
 type ReadFunction
   = Ptr CChar  --  pointer to external buffer to fill in.
- -> CInt       --  width (in bytes) of each item
- -> CInt       --  number of items
+ -> CSize      --  width (in bytes) of each item
+ -> CSize      --  number of items
  -> Ptr ()     --  state argument (file pointer etc.)
- -> IO (Maybe CInt) --  how many bytes was copied into buffer; Nothing => abort.
+ -> IO (Maybe CSize) --  how many bytes was copied into buffer; Nothing => abort.
  
 type ReadFunctionPrim
   = Ptr CChar
- -> CInt
- -> CInt
+ -> CSize
+ -> CSize
  -> Ptr ()
- -> IO CInt
+ -> IO CSize
  
 
 type ProgressFunction
@@ -286,7 +286,7 @@ type DebugFunction
   = Curl       --  connection handle
  -> DebugInfo  --  type of call
  -> Ptr CChar  --  data buffer
- -> CInt       --  length of buffer
+ -> CSize      --  length of buffer
  -> Ptr ()     --  state argument
  -> IO ()      --  always 0
 
@@ -304,7 +304,7 @@ type DebugFunctionPrim
   = CurlH      --  connection handle
  -> CInt       --  type of call
  -> Ptr CChar  --  data buffer
- -> CInt       --  length of buffer
+ -> CSize      --  length of buffer
  -> Ptr ()     --  state argument
  -> IO CInt    --  always 0
 
@@ -316,7 +316,7 @@ type SSLCtxtFunction
  -> Ptr ()  --  state argument
  -> IO CInt
 
-curl_readfunc_abort :: CInt
+curl_readfunc_abort :: CSize
 curl_readfunc_abort = 0x10000000
 
 baseLong :: Int

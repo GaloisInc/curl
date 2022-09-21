@@ -9,10 +9,16 @@
 -- Stability : provisional
 -- Portability: portable
 --
--- Haskell binding to the libcurl <http://curl.haxx.se/> \"easy\" API.
+-- Haskell binding to the @libcurl@ <http://curl.se/> \"easy\" API.
 -- The \"easy\" API provides a higher-level, easy-to-get-started calling
 -- interface to the library's wide range of features for interacting
 -- with HTTP\/FTP\/etc servers.
+--
+--
+-- __Warning:__ Any POSIX executable using this package needs to be
+-- linked with the threaded runtime. @libcurl@ is incompatible with
+-- the non-threaded runtime due to the latter's [use of OS signals to
+-- implement timers](https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/rts/signals).
 --
 --------------------------------------------------------------------
 module Network.Curl.Easy
@@ -24,9 +30,9 @@ module Network.Curl.Easy
 
         , curl_global_init    -- :: CInt -> IO CurlCode
         , curl_global_cleanup -- :: IO ()
-	
-	, curl_version_number -- :: IO Int
-	, curl_version_string -- :: IO String
+
+        , curl_version_number -- :: IO Int
+        , curl_version_string -- :: IO String
         ) where
 
 import Network.Curl.Types

@@ -11,15 +11,20 @@
 -- Stability : provisional
 -- Portability: portable
 --
--- A Haskell binding the libcurl library <http://curl.haxx.se/>, a
+-- A Haskell binding the @libcurl@ library <http://curl.se/>, a
 -- proven and feature-rich library for interacting with HTTP(S)\/FTP
 -- servers.
 --
--- The binding was initially made against version 7.16.2; libcurl does
+-- The binding was initially made against version 7.16.2; @libcurl@ does
 -- appear to be considerate in not introducing breaking changes wrt
 -- older versions. So, unless you're after the latest features (i.e.,
 -- constructors towards the end the Option type), there's a very good
--- chance your code will work against older installations of libcurl.
+-- chance your code will work against older installations of @libcurl@.
+--
+-- __Warning:__ Any POSIX executable using this package needs to be
+-- linked with the threaded runtime. @libcurl@ is incompatible with
+-- the non-threaded runtime due to the latter's [use of OS signals to
+-- implement timers](https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/rts/signals).
 --
 --------------------------------------------------------------------
 
@@ -153,7 +158,7 @@ instance CurlBuffer LazyBS.ByteString where
     let readFinal = readIORef ref >>= return . LazyBS.fromChunks . reverse
     return (readFinal, \ v -> packCStringLen v >>= \ x -> modifyIORef ref (x:))
 
--- | Should be used once to wrap all uses of libcurl.
+-- | Should be used once to wrap all uses of @libcurl@.
 -- WARNING: the argument should not return before it
 -- is completely done with curl (e.g., no forking or lazy returns)
 withCurlDo :: IO a -> IO a
@@ -275,7 +280,7 @@ curlGetResponse url opts = curlGetResponse_ url opts
 -- 'CurlWriteFunction' and 'CurlHeaderFunction' options.
 perform_with_response :: (CurlHeader hdrTy, CurlBuffer bufTy)
                       => Curl
-		      -> IO (CurlResponse_ hdrTy bufTy)
+                      -> IO (CurlResponse_ hdrTy bufTy)
 perform_with_response h = perform_with_response_ h
 
 {-# DEPRECATED perform_with_response "Consider switching to perform_with_response_" #-}
@@ -288,7 +293,7 @@ perform_with_response h = perform_with_response_ h
 -- both headers and body via the 'CurlResponse_' type.
 perform_with_response_ :: (CurlHeader headerTy, CurlBuffer bodyTy)
                        => Curl
-		       -> IO (CurlResponse_ headerTy bodyTy)
+                       -> IO (CurlResponse_ headerTy bodyTy)
 perform_with_response_ h = do
    (finalHeader, gatherHeader) <- newIncomingHeader
    (finalBody,   gatherBody)   <- newIncoming
@@ -324,9 +329,9 @@ do_curl h url opts = do_curl_ h url opts
 
 do_curl_ :: (CurlHeader headerTy, CurlBuffer bodyTy)
          => Curl
-	 -> URLString
-	 -> [CurlOption]
-	 -> IO (CurlResponse_ headerTy bodyTy)
+         -> URLString
+         -> [CurlOption]
+         -> IO (CurlResponse_ headerTy bodyTy)
 do_curl_ h url opts = do
    setDefaultSSLOpts h url
    setopts h opts
@@ -352,8 +357,8 @@ curlHead url opts = initialize >>= \ h ->
 -- Returns the status line and the key-value pairs for the headers.
 curlHead_ :: (CurlHeader headers)
           => URLString
-	  -> [CurlOption]
-	  -> IO (String, headers)
+          -> [CurlOption]
+          -> IO (String, headers)
 curlHead_ url opts = initialize >>= \ h -> do
   (finalHeader, gatherHeader) <- newIncomingHeader
 --  setopt h (CurlVerbose True)
