@@ -24,9 +24,9 @@ module Network.Curl.Easy
 
         , curl_global_init    -- :: CInt -> IO CurlCode
         , curl_global_cleanup -- :: IO ()
-	
-	, curl_version_number -- :: IO Int
-	, curl_version_string -- :: IO String
+
+        , curl_version_number -- :: IO Int
+        , curl_version_string -- :: IO String
         ) where
 
 import Network.Curl.Types

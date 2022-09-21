@@ -275,7 +275,7 @@ curlGetResponse url opts = curlGetResponse_ url opts
 -- 'CurlWriteFunction' and 'CurlHeaderFunction' options.
 perform_with_response :: (CurlHeader hdrTy, CurlBuffer bufTy)
                       => Curl
-		      -> IO (CurlResponse_ hdrTy bufTy)
+                      -> IO (CurlResponse_ hdrTy bufTy)
 perform_with_response h = perform_with_response_ h
 
 {-# DEPRECATED perform_with_response "Consider switching to perform_with_response_" #-}
@@ -288,7 +288,7 @@ perform_with_response h = perform_with_response_ h
 -- both headers and body via the 'CurlResponse_' type.
 perform_with_response_ :: (CurlHeader headerTy, CurlBuffer bodyTy)
                        => Curl
-		       -> IO (CurlResponse_ headerTy bodyTy)
+                       -> IO (CurlResponse_ headerTy bodyTy)
 perform_with_response_ h = do
    (finalHeader, gatherHeader) <- newIncomingHeader
    (finalBody,   gatherBody)   <- newIncoming
@@ -324,9 +324,9 @@ do_curl h url opts = do_curl_ h url opts
 
 do_curl_ :: (CurlHeader headerTy, CurlBuffer bodyTy)
          => Curl
-	 -> URLString
-	 -> [CurlOption]
-	 -> IO (CurlResponse_ headerTy bodyTy)
+         -> URLString
+         -> [CurlOption]
+         -> IO (CurlResponse_ headerTy bodyTy)
 do_curl_ h url opts = do
    setDefaultSSLOpts h url
    setopts h opts
@@ -352,8 +352,8 @@ curlHead url opts = initialize >>= \ h ->
 -- Returns the status line and the key-value pairs for the headers.
 curlHead_ :: (CurlHeader headers)
           => URLString
-	  -> [CurlOption]
-	  -> IO (String, headers)
+          -> [CurlOption]
+          -> IO (String, headers)
 curlHead_ url opts = initialize >>= \ h -> do
   (finalHeader, gatherHeader) <- newIncomingHeader
 --  setopt h (CurlVerbose True)
