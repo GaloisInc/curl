@@ -9,7 +9,7 @@
 -- Stability : provisional
 -- Portability: portable
 --
--- Haskell binding to the libcurl <http://curl.haxx.se/> \"easy\" API.
+-- Haskell binding to the libcurl <http://curl.se/> \"easy\" API.
 -- The \"easy\" API provides a higher-level, easy-to-get-started calling
 -- interface to the library's wide range of features for interacting
 -- with HTTP\/FTP\/etc servers.

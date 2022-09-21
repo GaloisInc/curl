@@ -11,7 +11,7 @@
 -- Stability : provisional
 -- Portability: portable
 --
--- A Haskell binding the libcurl library <http://curl.haxx.se/>, a
+-- A Haskell binding the libcurl library <http://curl.se/>, a
 -- proven and feature-rich library for interacting with HTTP(S)\/FTP
 -- servers.
 --
