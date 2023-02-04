@@ -7,6 +7,9 @@
  * (c) 2007-2009, Galois, Inc.
  *
  */
+
+// The curl gcc cpp getinfo typechecker doesn't cope well with our wrappers
+#define CURL_DISABLE_TYPECHECK
 #include <curl/curl.h>
 
 int curl_easy_getinfo_long(void *curl, long tg, long *pl)
